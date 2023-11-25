@@ -7,9 +7,9 @@
     <div class="row"> 
         <div class="col-md-6 col-lg-6">
             <div class="row p-3"> 
-                <div class="col-12 mb-3"><img src="<?= $profileData['data']['profile_image'] ?>s" alt="userprofile" class="rounded-circle" ></div>
+                <div class="col-12 mb-3"><img src="<?= $profileData['data']['profile_image'] ?>" alt="userprofile" class="rounded-circle" ></div>
                 <div class="col-3">Selamat datang,</div>
-                <div class="col-12"><h2><?= $profileData['data']['first_name'] ?> <?= $profileData['data']['last_name'] ?></h2></div>
+                <div class="col-12"><h2><?= mb_convert_case($profileData['data']['first_name'], MB_CASE_TITLE) . ' ' . mb_convert_case($profileData['data']['last_name'], MB_CASE_TITLE); ?></h2></div>
             </div>
         </div>
         <div class="col-md-6 col-lg-6 bg-danger rounded">
@@ -32,7 +32,7 @@
    
     <div class="col-12 border border-2 border-dark-subtle mb-3">
     <span class="d-flex"><i class="fs-5 text-secondary bi bi-cash m-2"></i>
-    <input type="number" class="form-control-plaintext" id="amount" name="top_up_amount" placeholder="Masukkan Nominal Top Up" aria-label="Username" aria-describedby="addon-wrapping"></span>
+    <input type="number" class="form-control-plaintext" id="amount" name="top_up_amount" placeholder="Masukkan Nominal Top Up" aria-label="Amount" aria-describedby="addon-wrapping"></span>
 </div>
 
 <div class="d-grid gap-2">
@@ -65,10 +65,10 @@
                 <h5 class="mt-3">Anda yakin untuk Top Up sebesar</h5>
                 <h2 class="mb-4" id="displayAmount">RP 0</h2>
             
-                <form action="/topup/store" method="post">
+                <form action="/topup/store"  method="post">
                     <?= csrf_field() ?>
                     <input type="hidden" name="top_up_amount" id="amountInput">
-                    <button type="submit" class="btn btn-danger btn-lg">Ya, Lanjutkan Top Up</button>
+                    <button type="submit" class="text-danger">Ya, Lanjutkan Top Up</button>
                 </form>
                 <a type="button" class="link-offset-2 link-underline link-underline-opacity-0 link-secondary" data-bs-dismiss="modal">Batal</a>
             </div>
@@ -136,13 +136,6 @@ function formatCurrency(amount) {
     return `RP ${new Intl.NumberFormat().format(amount)}`;
 }
 
-
-  // Fungsi untuk menampilkan modal dengan pesan kesuksesan dan saldo
-  function showSuccessModal(message, balance) {
-        $('#successMessage').text(message);
-        $('#balanceMessage').text('Saldo sekarang: ' + balance);
-        $('#successModal').modal('show');
-    }
 
 </script>
 <?= $this->endSection() ?>

@@ -19,6 +19,9 @@ $routes->post('/registration/store', 'RegistrasiController::store');
 $routes->get('/homepage', 'HomepageController::index', ['filter' => 'auth']);  
 $routes->get('/topup', 'TopupController::index', ['filter' => 'auth']);  
 $routes->post('/topup/store', 'TopupController::topup');  
-$routes->get('/transaksi', 'TransaksiController::index');  
+$routes->get('/transaksi', 'TransaksiController::index', ['filter' => 'auth']);  
+$routes->get('/profile', 'ProfileController::index', ['filter' => 'auth']);  
+$routes->post('/profile/update', 'ProfileController::update');  
+$routes->put('/profile/update', 'ProfileController::update');  
 
 

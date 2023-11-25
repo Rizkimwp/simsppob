@@ -37,11 +37,9 @@
                                 <a class="nav-link" href="/transaksi">Transaction</a>
                             </li>
                             <li class="nav-item me-4">
-                                <a class="nav-link" href="#">Akun</a>
+                                <a class="nav-link" href="/profile">Akun</a>
                             </li>
-                            <li class="nav-item me-4">
-                                <a class="nav-link" href="/logout">Logout</a>
-                            </li>
+                            
                         </ul>
                     </span>
                 </div>

@@ -11,11 +11,6 @@
                 <h3>Lengkapi data untuk <br>membuat akun</h3>
             </div>
 
-            <?php if (session()->getFlashdata('success')) : ?>
-            <div class="alert alert-success">
-                <?php echo session()->getFlashdata('success'); ?>
-            </div>
-            <?php endif; ?>
 
             <form action="/registration/store" method="POST">
 

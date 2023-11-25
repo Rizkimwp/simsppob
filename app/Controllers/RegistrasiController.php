@@ -29,10 +29,11 @@ class RegistrasiController extends BaseController
             'email' => 'required|valid_email',
             'first_name' => 'required',
             'last_name' => 'required',
-            'password' => 'required|min_length[8]' // Atur panjang minimal password
+            'password' => 'required|min_length[8]' 
         ];
 
         $validation = \Config\Services::validation();
+        
     if (!$validation->setRules($validationRules)->run($this->request->getPost())) {
         $errors = [
             'email' => $validation->getError('email'),
@@ -61,26 +62,29 @@ class RegistrasiController extends BaseController
     
             // Ubah respons JSON menjadi array
             $apiResponse = json_decode($response->getBody(), true);
-    
-            if ($response->getStatusCode() === 201) {
-                // Registrasi berhasil, kirimkan respons dengan redirect ke route tertentu
-                return redirect()->to('/registration')->with('success', 'Registrasi berhasil');
-            } else {
-                // Registrasi gagal, kirimkan pesan error terperinci kepada pengguna
-                if (isset($apiResponse['messages'])) {
-                    // Pesan error terperinci dari API
-                    $errorMessages = $apiResponse['messages'];
-    
-                    // Kirimkan pesan-pesan kesalahan ke view
-                    return view('auth/registrasi', ['errors' => $errorMessages]);
-                } else {
-                    // Pesan error umum
-                    return $this->fail($apiResponse['message']);
-                }
-            }
-        } catch (\Exception $e) {
-            // Tangkap kesalahan saat melakukan permintaan ke API
-            return view('auth/registrasi', ['error' => 'Error: ' . $e->getMessage()]);
+    // Periksa jika respons berhasil
+    if ($response->getStatusCode() === 200) {
+        $apiResponse = json_decode($response->getBody(), true);
+
+        // Periksa status dan pesan dari respons
+        if ($apiResponse['status'] === 0) {
+            // Registrasi berhasil
+            $successMessage = $apiResponse['message']; // Pesan "Registrasi berhasil silahkan login"
+
+            // Kirim pesan ke view atau lakukan tindakan sesuai kebutuhan aplikasi Anda
+            return view('auth/login', ['successMessage' => $successMessage]);
+        } else {
+            // Registrasi gagal, lakukan tindakan sesuai kebutuhan aplikasi Anda
+            // Contoh: Tampilkan pesan gagal
+            return view('auth/registrasi', ['errorMessage' => $apiResponse['message']]);
         }
+    } else {
+        // Tangani jika ada kesalahan dalam permintaan (misalnya, kode status bukan 200)
+        return view('error_page');
+    }
+            } catch (\Exception $e) {
+                // Tangkap kesalahan saat melakukan permintaan ke API
+                return view('auth/registrasi', ['error' => 'Error: ' . $e->getMessage()]);
+            }
     }
 }

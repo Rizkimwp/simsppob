@@ -15,7 +15,7 @@ togglePassword1.addEventListener('click', function () {
     }
 });
 
-
+// Password Sembunyi dan Munculkan
 togglePassword2.addEventListener('click', function () {
 
     if (passwordInput2.type === 'password') {
@@ -26,3 +26,5 @@ togglePassword2.addEventListener('click', function () {
         togglePassword2.innerHTML = '<i class="fs-4 bi bi-eye"></i>';
     }
 });
+
+

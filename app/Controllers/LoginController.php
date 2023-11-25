@@ -1,68 +1,77 @@
 <?php
 
 namespace App\Controllers;
-
-use Config\Services;
+use \Firebase\JWT\JWT;
 
 class LoginController extends BaseController
 {
+
+
+
   public function index(): string
   {
     // Load HTTP client
 
     return view('auth/login');
   }
+ 
 
   public function store()
-  {
+{
     $email = $this->request->getPost('email');
     $password = $this->request->getPost('password');
 
-    // Lakukan validasi email dan password di sini
+    // ... (validasi dan pengecekan email & password)
 
     if ($email && $password) {
-      // Contoh validasi sederhana
-      // Anda bisa menggunakan validasi lebih lanjut sesuai kebutuhan Anda
-      if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        // Panggil API menggunakan HTTP client untuk login
-        $client = \Config\Services::curlrequest();
-        $api_url = 'https://take-home-test-api.nutech-integrasi.app/login'; // Ganti dengan URL API yang sebenarnya
+        if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            
+            // Lakukan panggilan API menggunakan HTTP client untuk login
+            $client = \Config\Services::curlrequest();
+            $api_url = 'https://take-home-test-api.nutech-integrasi.app/login'; // Sesuaikan dengan URL API yang sesuai
 
-        try {
-          $response = $client->request('POST', $api_url, [
-            'form_params' => [
-              'email' => $email,
-              'password' => $password
-            ]
-          ]);
+            try {
+                $response = $client->request('POST', $api_url, [
+                    'form_params' => [
+                        'email' => $email,
+                        'password' => $password
+                    ]
+                ]);
 
+                // Proses respons dari API
+                $statusCode = $response->getStatusCode();
+                $responseData = json_decode($response->getBody(), true);
 
-          $statusCode = $response->getStatusCode();
-          $responseData = $response->getBody();
-          $responseDataArray = json_decode($responseData, true);
-          if ($statusCode === 200) {
-            // Login berhasil
-            session()->set('isLoggedIn', true);
-            // Simpan token ke dalam sesi
-            $token = isset($responseDataArray['token']) ? $responseDataArray['token'] : null;
-            session()->set('userToken', $token);
+                if ($statusCode === 200) {
+                    // Login berhasil
+                    session()->set('isLoggedIn', true);
 
-            return redirect()->to('/homepage');
-          } elseif ($statusCode === 400) {
-            // Jika respons dari API menunjukkan error karena password salah
-            $errorMessage = isset($responseDataArray['error']) ? $responseDataArray['error'] : 'Invalid credentials. Please try again.';
-            return view('auth/login', ['error' => $errorMessage]);
-          } else {
-            // Respons lain yang tidak diharapkan dari API
-            return view('auth/login', ['error' => 'Unexpected error. Please try again later.']);
-          }
-        } catch (\Exception $e) {
-          // Tangkap kesalahan saat melakukan permintaan ke API
-          return view('auth/login', ['error' => 'email atau password salah.']);
+                    // Memuat payload JWT dengan email dan waktu kedaluwarsa 12 jam
+                    $expirationTime = time() + (12 * 60 * 60); // Waktu kedaluwarsa 12 jam
+                    $payload = [
+                        'email' => $email,
+                        'exp' => $expirationTime
+                    ];
+
+                  
+                    $token = $responseData['data']['token'];
+
+            // Simpan token ke dalam session
+                   session()->set('userToken', $token);
+                    // Menyimpan token ke dalam sesi
+                  
+                    return redirect()->to('/homepage');
+                } else {    
+                    // Tangani kondisi lain dari respons API
+                    // ...
+                }
+            } catch (\Exception $e) {
+                // Tangani kesalahan saat melakukan permintaan ke API
+                return view('auth/login', ['error' => 'email atau password salah.']);
+            }
         }
-      }
     }
-  }
+}
 
 
   public function logout()

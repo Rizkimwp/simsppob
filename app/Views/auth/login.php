@@ -8,7 +8,7 @@
             <div class="col-lg-12 col-md-5 text-center mb-4 fw-bold"> <img src="<?= base_url('images/logo.png') ?>"
                     alt=""> SIMS PPOB</div>
             <div class="col-lg-12 col-md-8 text-center mb-5">
-                <h3>Lengkapi data untuk <br>membuat akun</h3>
+                <h3>Masuk atau buat akun <br>untuk memulai</h3>
             </div>
 
             <!-- Alert Pesan Berhasil Registrasi -->
@@ -43,6 +43,11 @@
         sini</a></p>
     </div>
 </div>
+<?php if (isset($successMessage)) : ?>
+    <div class="alert alert-success">
+        <?php echo $successMessage; ?>
+    </div>
+<?php endif; ?>
 <?php if (isset($error)) : ?>
     <div class="alert alert-danger" role="alert">
     <?php echo $error; ?>

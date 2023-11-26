@@ -10,6 +10,7 @@ class TopupController extends BaseController
 {
     public function index()
     {
+        
         $profileModel = new ProfileModel();
         $profileData = $profileModel->getProfileData();
         $balanceModel = new Balance();

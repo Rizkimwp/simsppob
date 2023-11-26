@@ -14,6 +14,7 @@ class HistoryController extends BaseController
 
     public function index()
     {
+        
         // Mendapatkan data Profile 
         $profileModel = new ProfileModel();
         $profileData = $profileModel->getProfileData();

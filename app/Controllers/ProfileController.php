@@ -8,6 +8,7 @@ class ProfileController extends BaseController
 {
     public function index()
     {
+        
         $profileModel = new ProfileModel();
         $profileData = $profileModel->getProfileData();
         return view('homepage/profile', [

@@ -11,6 +11,7 @@ class TransaksiController extends BaseController
 {
     public function index($serviceCode)
     {
+        
         // Ambil Profile Data
         $profileModel = new ProfileModel();
         $profileData = $profileModel->getProfileData();

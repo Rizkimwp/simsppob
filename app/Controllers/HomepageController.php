@@ -14,6 +14,7 @@ class HomepageController extends BaseController
 
     public function index()
     {
+        
         $bannerModel = new Banner();
         $servicesModel = new Services();
         $balanceModel = new Balance();

@@ -22,11 +22,11 @@ https://rizkimaulanawahyu.000webhostapp.com/
 
 1. **Clone Repository:**
     ```
-    git clone https://github.com/username/namaprojek.git
+    git clone https://github.com/Rizkimwp/simsppob.git
     ```
 2. **Instal Dependencies:**
     ```
-    cd namaprojek
+    cd simsppob
     npm install
     ```
 3. **Jalankan Aplikasi:**

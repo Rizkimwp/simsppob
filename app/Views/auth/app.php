@@ -25,7 +25,7 @@
             <div class="col-md-6 "
                 style="background-image: url('<?= base_url('images/ilustrasi_login.png') ?>'); background-size: cover;">
                 <!-- Tidak ada konten di sini karena digunakan sebagai gambar latar belakang -->
-            </div>
+         </div>
         </div>
     </div>
 

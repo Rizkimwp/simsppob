@@ -25,13 +25,15 @@ class RegistrasiController extends BaseController
         $firstname = $this->request->getPost('first_name');
         $lastname = $this->request->getPost('last_name');
         $password = $this->request->getPost('password');
+       
 
         // Lakukan validasi di sini
         $validationRules = [
             'email' => 'required|valid_email',
             'first_name' => 'required',
             'last_name' => 'required',
-            'password' => 'required|min_length[8]'
+            'password' => 'required|min_length[8]',
+            'password_confirmation' => 'matches[password]'
         ];
 
         $validation = \Config\Services::validation();
@@ -42,6 +44,7 @@ class RegistrasiController extends BaseController
                 'first_name' => $validation->getError('first_name'),
                 'last_name' => $validation->getError('last_name'),
                 'password' => $validation->getError('password'),
+                'password_confirmation' => $validation->getError('password_confirmation') 
             ];
 
             return view('auth/registrasi', ['errors' => $errors]);
@@ -81,7 +84,7 @@ class RegistrasiController extends BaseController
                     return view('auth/registrasi', ['errorMessage' => $apiResponse['message']]);
                 }
             } else {
-                // Tangani jika ada kesalahan dalam permintaan (misalnya, kode status bukan 200)
+                // Tangani jika ada kesalahan dalam permintaan  kode status bukan 200)
                 return view('error_page');
             }
         } catch (\Exception $e) {

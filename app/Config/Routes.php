@@ -27,12 +27,10 @@ $routes->get('/history/loadmore', 'HistoryController::loadMore', ['filter' => 'a
 $routes->get('/profile', 'ProfileController::index', ['filter' => 'auth']);  
 $routes->post('/profile/update', 'ProfileController::update');  
 $routes->put('/profile/update', 'ProfileController::update');  
-$routes->post('/profile/image', 'ProfileController::updateImage');  
 $routes->put('/profile/image', 'ProfileController::updateImage');  
-
-
+$routes->post('/profile/image', 'ProfileController::updateImage');  
 // Route Transaksi Services
-$routes->get('transaksi/(:segment)', 'TransaksiController::index/$1');
+$routes->get('transaksi/(:segment)', 'TransaksiController::index/$1', ['filter' => 'auth']);
 $routes->post('/transaksi', 'TransaksiController::store');
 
 

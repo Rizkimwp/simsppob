@@ -16,6 +16,8 @@ class ProfileController extends BaseController
 
         public function update()
 {
+
+
     // Ambil data yang akan diupdate dari form atau sumber lain
     $updatedData = [
         'email' => $this->request->getPost('email'),
@@ -26,13 +28,10 @@ class ProfileController extends BaseController
 
     // Ambil token dari sesi login
     $token = session()->get('userToken');
-
     // Buat instance HTTP client
     $client = \Config\Services::curlrequest();
-
     // Endpoint API untuk update profile
     $url = "https://take-home-test-api.nutech-integrasi.app/profile/update";
-
     // Header dengan token JWT
     $headers = [
         'Authorization' => 'Bearer ' . $token,
@@ -52,70 +51,84 @@ class ProfileController extends BaseController
             return redirect()->to('/profile')->with('success', 'Profil berhasil diperbarui');
         } else {
             // Jika respons gagal
-            return redirect()->back()->withInput()->with('error', 'Gagal memperbarui profil. Coba lagi nanti.');
+            return redirect()->to('/profile')->with('error', 'Gagal memperbarui profil. Coba lagi nanti.');
         }
     } catch (\Exception $e) {
         // Tangani kesalahan yang terjadi saat panggilan API
-        return redirect()->back()->withInput()->with('error', 'Terjadi kesalahan. Coba lagi nanti atau periksa koneksi internet Anda.');
+        return redirect()->to('/profile')->with('error', 'Gagal memperbarui profil. Table tidak boleh kosong');
     }
 }
 
 
-// Fungsi Update Image
-public function updateImage()
-{
-    $validationRules = [
-        'profile_image' => [
-            'label' => 'Profile Image',
-            'rules' => 'uploaded[profile_image]|max_size[profile_image,100]|mime_in[profile_image,image/jpeg,image/png]',
-            'errors' => [
-                'uploaded' => 'Pilih sebuah gambar.',
-                'max_size' => 'Ukuran gambar melebihi batas maksimum 100 KB.',
-                'mime_in' => 'Format gambar tidak valid. Hanya file JPG atau PNG yang diperbolehkan.'
-            ]
-        ]
-    ];
 
-    if ($this->validate($validationRules)) {
-        $url = "https://take-home-test-api.nutech-integrasi.app/profile/image";
-        $token = session()->get('userToken');
-        $uploadedImage = $this->request->getFile('profile_image');
-        $filePath = $uploadedImage->getRealPath();
 
-        $client = \Config\Services::curlrequest();
+    
+    public function updateImage() {
+        // Ambil file gambar dari form
+        $file = $this->request->getFile('file');
 
-        try {
-            $response = $client->request('PUT', $url, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $token,
-                    'Content-Type' => 'multipart/form-data',
-                ],
-                'multipart' => [
-                    [
-                        'name' => 'file',
-                        'contents' => fopen($filePath, 'r'),
-                        'filename' => $uploadedImage->getName(),
-                    ],
-                ],
-            ]);
+        // Validasi file yang diunggah
+        if ($file->isValid() && !$file->hasMoved()) {
+            // Validasi tipe file
+            if ($file->getClientMimeType() === 'image/jpeg' || $file->getClientMimeType() === 'image/png') {
+                // Validasi ukuran file
+                if ($file->getSize() < 100 * 1024) { // Ukuran dalam bytes, 100 KB
+                    // Ambil binary dari file gambar
+                    $binary = file_get_contents($file->getTempName());
 
-            if ($response->getStatusCode() === 200) {
-                return redirect()->to('/profile')->with('success', 'Gambar profil berhasil diunggah');
+                    // Lakukan request ke API menggunakan cURL
+                    $ch = curl_init();
+                    $apiUrl = 'https://take-home-test-api.nutech-integrasi.app/profile/image'; // Ganti dengan URL API yang sesuai
+
+                    // Setup cURL untuk mengirimkan file dan string biner
+                    $postData = [
+                        'file' => curl_file_create($file->getTempName(), $file->getClientMimeType(), $file->getName()),
+                        'binary' => $binary
+                    ];
+
+                    curl_setopt($ch, CURLOPT_URL, $apiUrl);
+                    curl_setopt($ch, CURLOPT_POST, true);
+                    curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+                    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+                    // Eksekusi permintaan cURL
+                    $response = curl_exec($ch);
+
+                    // Periksa respons dari API
+                    if ($response === false) {
+                        // Gagal melakukan permintaan cURL
+                        $error = curl_error($ch);
+                        curl_close($ch);
+                        return redirect()->back()->with('error', 'Gagal melakukan permintaan cURL: ' . $error);
+                    } else {
+                        // Berhasil mendapatkan respons dari API
+                        curl_close($ch);
+
+                        // Lakukan sesuatu dengan respons dari API jika diperlukan
+                        return redirect()->to('/profile')->with('success', 'Gambar berhasil diunggah');
+                    }
+                } else {
+                    // Ukuran file terlalu besar
+                    return redirect()->back()->withInput()->with('error', 'Ukuran gambar terlalu besar (maksimum 100 KB)');
+                }
             } else {
-                return redirect()->to('/profile')->with('error', 'Gagal mengunggah gambar profil');
+                // Tipe file tidak didukung
+                return redirect()->back()->withInput()->with('error', 'Format gambar tidak didukung. Hanya JPEG dan PNG yang diizinkan.');
             }
-        } catch (\Exception $e) {
-            $errorMessage = $e->getMessage();
-            return redirect()->to('/profile')->with('error', $errorMessage);
+        } else {
+            // Tidak ada file yang diunggah
+            return redirect()->back()->withInput()->with('error', 'Tidak ada gambar yang diunggah');
         }
-    } else {
-        return redirect()->to('/profile')->with('error', $this->validator->getErrors());
+    
     }
 }
 
 
 
-}
+
+
+
+
 
     
 

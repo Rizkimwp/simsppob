@@ -8,7 +8,7 @@ class History extends Model
 {
     protected $table = 'transaction_history'; 
         // Fungsi untuk memanggil data service
-        public function getTransaksiHistory($token, $limit = null){
+        public function getTransaksiHistory( $limit = null){
             // Lakukan panggilan API menggunakan HTTP client untuk get /Profile
             $client = \Config\Services::curlrequest();
            

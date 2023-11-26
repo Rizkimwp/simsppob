@@ -15,37 +15,37 @@
             <form action="/registration/store" method="POST">
 
                 <?= csrf_field() ?>
-                <div class="col-12 border mb-4">
+                <div class="col-12 border mb-4 <?php if(isset($errors['email'])): 'border-danger'?>  <?php endif; ?>">
                     <span class="d-flex"><i class="fs-3 bi bi-at m-1 text-secondary"></i><input type="text" name="email"
                             class="form-control-plaintext  " placeholder="Masukan email anda" aria-label="Username"
                             aria-describedby="addon-wrapping"></span>
 
 
                 </div>
-                <div class="col-12 border mb-4">
-                    <span class="d-flex"><i class="fs-3 bi bi-person-fill m-1 text-secondary"></i><input type="text" name="first_name"
-                            class="form-control-plaintext " placeholder="nama depan" aria-label="Username"
-                            aria-describedby="addon-wrapping"></span>
+                <div
+                    class="col-12 border mb-4 <?php if(isset($errors['first_name'])): echo 'border-danger' ?>  <?php endif; ?>">
+                    <span class="d-flex"><i class="fs-3 bi bi-person-fill m-1 text-secondary"></i><input type="text"
+                            name="first_name" class="form-control-plaintext " placeholder="nama depan"></span>
                 </div>
-                <div class="col-12 border mb-4">
-                    <span class="d-flex"><i class="fs-3 bi bi-person-fill m-1 text-secondary"></i><input type="text" name="last_name"
-                            class="form-control-plaintext" placeholder="nama belakang" aria-label="Username"
-                            aria-describedby="addon-wrapping"></span>
+                <div
+                    class="col-12 border mb-4 <?php if(isset($errors['last_name'])): echo 'border-danger' ?>  <?php endif; ?>">
+                    <span class="d-flex"><i class="fs-3 bi bi-person-fill m-1 text-secondary"></i><input type="text"
+                            name="last_name" class="form-control-plaintext" placeholder="nama belakang"></span>
                 </div>
-                <div class="col-12 border mb-4">
-                    <span class="d-flex"><i class="fs-3 bi bi-lock-fill m-1 text-secondary"></i><input type="password" name="password"
-                            class="form-control-plaintext" placeholder="buat password" id="passwordInput1"
-                            aria-label="Username" aria-describedby="addon-wrapping"> <span class="m-1"
-                            id="togglePassword1">
-                            <i class="fs-4 bi bi-eye"></i>
+                <div
+                    class="col-12 border mb-4 <?php if(isset($errors['password'])): echo 'border-danger' ?>  <?php endif; ?>">
+                    <span class="d-flex"><i class="fs-3 bi bi-lock-fill m-1 text-secondary"></i><input type="password"
+                            name="password" class="form-control-plaintext" placeholder="buat password"
+                            id="passwordInput1"> <span class="m-2" id="togglePassword1">
+                            <i class="fs-5 bi bi-eye"></i>
                         </span></span>
                 </div>
-                <div class="col-12 border mb-5">
+                <div
+                    class="col-12 border mb-5 <?php if(isset($errors['password_confirmation'])): echo 'border-danger'  ?>  <?php endif; ?>">
                     <span class="d-flex"><i class="fs-3 bi bi-lock-fill m-1 text-secondary"></i><input type="password"
                             class="form-control-plaintext" id="passwordInput2" placeholder="konfirmasi password"
-                            aria-label="Username" aria-describedby="addon-wrapping"> <span class="m-1"
-                            id="togglePassword2">
-                            <i class="fs-4 bi bi-eye"></i>
+                            name="oasswor_confirmation"> <span class="m-2" id="togglePassword2">
+                            <i class="fs-5 bi bi-eye"></i>
                         </span></span>
                 </div>
 
@@ -63,14 +63,9 @@
                     sini</a></p>
         </div>
     </div>
-    <?php if (!empty($errors)) : ?>
 
-    <?php foreach ($errors as $error) : ?>
-    <div class="alert alert-danger" role="alert">
-        <?= $error; ?> </div>
-    <?php endforeach; ?>
 
-    <?php endif; ?>
+
 
 
 </div>

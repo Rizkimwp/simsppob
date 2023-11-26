@@ -7,7 +7,7 @@
     <div class="row"> 
         <div class="col-md-6 col-lg-6">
             <div class="row p-3"> 
-                <div class="col-12 mb-3"><img src="<?= $profileData['data']['profile_image'] ?>" alt="userprofile" class="rounded-circle" ></div>
+                <div class="col-12 mb-3"><img src="<?= base_url('images/profile_photo.png') ?>" alt="userprofile" class="rounded-circle" ></div>
                 <div class="col-3">Selamat datang,</div>
                 <div class="col-12"><h2><?= mb_convert_case($profileData['data']['first_name'], MB_CASE_TITLE) . ' ' . mb_convert_case($profileData['data']['last_name'], MB_CASE_TITLE); ?></h2></div>
             </div>
@@ -25,7 +25,6 @@
     <h4 class="ps-3">Semua Transaksi</h4>
 </div>
 
-
 <?php foreach ($transaksi['data']['records'] as $transaksiHistory): ?>
     <div class="row border border-2 p-2 rounded  m-3">
         <div class="col-md-6">  
@@ -42,12 +41,45 @@
     </div>
 <?php endforeach; ?>
 
+
 <div class="text-center">
-    <button id="show-more-btn" class="btn btn-primary mt-3">Show More</button>
+    <button id="show-more-btn" class="btn border-danger mt-3 mb-4" id="showMoreButton">Show More</button>
 </div>
+
+<div id="transactionHistory"> </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
+    let offset = <?php echo count($transaksiHistory); ?>; // Hitung offset untuk item-item berikutnya
+    const showMoreButton = document.getElementById('showMoreButton');
+
+    showMoreButton.addEventListener('click', function () {
+        fetch('HistoryController/showMore', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                offset: offset // Kirim offset ke controller saat tombol "Show More" ditekan
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Tambahkan data transaksi berikutnya ke dalam tampilan
+            const transactionHistoryDiv = document.getElementById('transactionHistory');
+            data.forEach(transaction => {
+                const transactionDiv = document.createElement('div');
+                transactionDiv.textContent = transaction['transaction_data'];
+                transactionHistoryDiv.appendChild(transactionDiv);
+            });
+
+            offset += data.length; // Update offset
+        })
+        .catch(error => {
+            console.error('Error fetching more data:', error);
+        });
+    });
+</script>
    
 
 

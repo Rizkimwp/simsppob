@@ -6,7 +6,7 @@
     <div class="row"> 
         <div class="col-md-6 col-lg-6">
             <div class="row p-3"> 
-                <div class="col-12 mb-3"><img src="<?= $profileData['data']['profile_image'] ?>" alt="userprofile" class="rounded-circle" ></div>
+                <div class="col-12 mb-3"><img src="<?= base_url('images/profile_photo.png') ?>" alt="userprofile" class="rounded-circle" ></div>
                 <div class="col-3">Selamat datang,</div>
                 <div class="col-12"><h2><?= mb_convert_case($profileData['data']['first_name'], MB_CASE_TITLE) . ' ' . mb_convert_case($profileData['data']['last_name'], MB_CASE_TITLE); ?></h2></div>
             </div>

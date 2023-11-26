@@ -26,14 +26,14 @@ class HistoryController extends BaseController
         $balanceData = number_format($formatBalance, 0, ',', '.');
 
         // Mendapatkan token dari session 
-        $token = session()->get('userToken'); 
-
+       
         // Membuat instance model TransactionModel
         $transactionModel = new History();
 
         // Mengambil data transaksi dengan atau tanpa limit (opsional)
         $limit = $this->request->getGet('limit');
-        $data = $transactionModel->getTransaksiHistory($token, $limit);
+        $offset = 0;
+        $data = $transactionModel->getTransaksiHistory($limit, $offset);
         
         // Menampilkan data atau melakukan operasi lain sesuai kebutuhan
         // Contoh: Tampilkan data dalam bentuk view
@@ -45,19 +45,15 @@ class HistoryController extends BaseController
 
     }
 
-    public function loadMore()
+    public function showMore()
     {
-        // Mendapatkan offset dari permintaan AJAX
-        $offset = $this->request->getVar('offset');
-
-        // Membuat instance model TransactionModel
-        $transactionModel = new Transaksi();
-
-        // Mengambil data transaksi lebih lanjut dengan offset
-        $limit = 5;
-        $data = $transactionModel->getTransaksiHistory($limit, $offset);
-
-        // Kirim data sebagai respons JSON
-        return $this->response->setJSON($data);
+        $limit = 5; // Jumlah data yang ingin ditampilkan setiap kali tombol "show more" ditekan
+        $offset = $this->request->getPost('offset');
+        $transactionModel = new History();
+        // Panggil fungsi getTransaksiHistory dengan limit dan offset yang baru
+        $transactions = $transactionModel->getTransaksiHistory($limit, $offset);
+    
+        // Kembalikan hasil dalam bentuk JSON
+        return $this->response->setJSON($transactions);
     }
 }

@@ -27,11 +27,11 @@ https://rizkimaulanawahyu.000webhostapp.com/
 2. **Instal Dependencies:**
     ```
     cd simsppob
-    npm install
+    
     ```
 3. **Jalankan Aplikasi:**
     ```
-    npm start
+    php spark serve
     ```
 
 

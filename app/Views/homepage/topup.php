@@ -20,10 +20,10 @@
                     <p class="fw-medium">Saldo Anda</p>
                 </div>
                 <div class="col-12">
-                    <h2>Rp <?= $balanceData ?>
+                <span id="amountBalance" class="fs-2 fw-bold" style="cursor: pointer;">Rp <?= $balanceData?></span>
                 </div>
-                <div class="col-12">
-                    <p class="fw-light">Lihat Saldo </p>
+                <div class="col-4">
+                <span class="fs-5 me-2">Lihat Saldo</span> <span id="toggleVisibilityIcon" class="fs-5 bi bi-eye " onclick="toggleVisibility()" style="cursor: pointer;"> </span>
                 </div>
             </div>
         </div>
@@ -168,7 +168,24 @@ amountInput.addEventListener('input', function() {
         <?php endif; ?>
     });
    
+    let isVisible = true;
 
+function toggleVisibility() {
+    const amountBalance = document.getElementById('amountBalance');
+    const toggleVisibilityIcon = document.getElementById('toggleVisibilityIcon');
+
+    if (isVisible) {
+        amountBalance.innerText = 'Rp ******';
+        toggleVisibilityIcon.classList.remove('bi-eye');
+        toggleVisibilityIcon.classList.add('bi-eye-slash');
+        isVisible = false;
+    } else {
+        amountBalance.innerText = 'Rp  <?= $balanceData ?>';
+        toggleVisibilityIcon.classList.remove('bi-eye-slash');
+        toggleVisibilityIcon.classList.add('bi-eye');
+        isVisible = true;
+    }
+}
     
 </script>
 

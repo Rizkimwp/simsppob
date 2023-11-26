@@ -99,6 +99,25 @@
             </form>
         </div>
 
-       
+       <script>
+
+document.addEventListener('DOMContentLoaded', function() {
+    const editIcon = document.querySelector('.edit-icon');
+    const profileImageInput = document.getElementById('profileImageInput');
+    const imageUploadForm = document.getElementById('imageUploadForm');
+
+    // Ketika ikon edit diklik
+    editIcon.addEventListener('click', function() {
+        // Munculkan jendela untuk memilih gambar saat ikon edit diklik
+        profileImageInput.click();
+    });
+
+    // Ketika gambar dipilih
+    profileImageInput.addEventListener('change', function() {
+        // Simpan gambar yang dipilih dengan melakukan submit pada form
+        imageUploadForm.submit();
+    });
+});
+       </script>
 
                 <?= $this->endSection() ?>

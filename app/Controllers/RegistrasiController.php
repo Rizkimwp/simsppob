@@ -20,35 +20,46 @@ class RegistrasiController extends BaseController
 
     public function store()
     {
-        // Ambil data dari request
-        $email = $this->request->getPost('email');
-        $firstname = $this->request->getPost('first_name');
-        $lastname = $this->request->getPost('last_name');
-        $password = $this->request->getPost('password');
-       
+        $email = $this->request->getVar('email');
+        $password = $this->request->getVar('password');
+        $firstname = $this->request->getVar('first_name');
+        $lastname = $this->request->getVar('last_name');
+helper('form');
 
-        // Lakukan validasi di sini
-        $validationRules = [
-            'email' => 'required|valid_email',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'password' => 'required|min_length[8]',
-            'password_confirmation' => 'matches[password]'
-        ];
+// Menyiapkan aturan validasi untuk email dan password
+$rules = [
+    'email' => 'required|valid_email',
+    'password' => 'required|min_length[8]',
+    'first_name' => 'required',
+    'last_name' => 'required',
+    'password_confirmation' => 'matches[password]'
+];
 
-        $validation = \Config\Services::validation();
+// Pesan kesalahan yang ingin ditampilkan
+$errors = [
+    'email' => [
+        'valid_email' => 'Email tidak valid'
+    ],
+    'password' => [
+        'required' => 'Password harus diisi',
+        'min_length' => 'Password minimal harus terdiri dari {param} karakter'
+    ],
+    'first_name' => [
+        'required' => 'Nama depan harus diisi'
+    ],
+    'last_name' => [
+        'required' => 'Nama belakang harus diisi'
+    ],
+    'password_confirmation' => [
+        'matches' => ' password tidak sama'
+    ]
+];
 
-        if (!$validation->setRules($validationRules)->run($this->request->getPost())) {
-            $errors = [
-                'email' => $validation->getError('email'),
-                'first_name' => $validation->getError('first_name'),
-                'last_name' => $validation->getError('last_name'),
-                'password' => $validation->getError('password'),
-                'password_confirmation' => $validation->getError('password_confirmation') 
-            ];
+// Jalankan validasi dengan aturan yang ditentukan
+if ($this->validate($rules, $errors)) {
+    // Ambil data dari input
+    
 
-            return view('auth/registrasi', ['errors' => $errors]);
-        }
 
         // Jika data valid, kirimkan ke endpoint registrasi
         $client = \Config\Services::curlrequest();
@@ -85,11 +96,17 @@ class RegistrasiController extends BaseController
                 }
             } else {
                 // Tangani jika ada kesalahan dalam permintaan  kode status bukan 200)
-                return view('error_page');
+                return view('auth/registrasi');
             }
         } catch (\Exception $e) {
             // Tangkap kesalahan saat melakukan permintaan ke API
-            return view('auth/registrasi', ['error' => 'Error: ' . $e->getMessage()]);
+            return view('auth/registrasi', ['error' => 'email sudah terdaftar']);
         }
-    }
-}
+    } else {
+    // Jika validasi gagal, tampilkan pesan kesalahan di halaman registrasi
+    return view('auth/registrasi', [
+        'validation' => $this->validator, // Mengirim pesan kesalahan validasi ke halaman
+        'error' => 'Pastikan semua isian diisi dengan benar'
+    ]);
+} 
+    }}

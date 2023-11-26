@@ -15,8 +15,13 @@
         <div class="col-md-6 col-lg-6 bg-danger rounded">
         <div class="row p-4 text-white"> 
                 <div class="col-12"><p class="fw-medium">Saldo Anda</p></div>
-                <div class="col-12"><h2>Rp <?= $balanceData?> </div>
-                <div class="col-12"><p class="fw-light">Lihat Saldo </p></div>
+                <div class="col-12">
+                    <span id="amountBalance" class="fs-2 fw-bold" style="cursor: pointer;">Rp <?= $balanceData?></span>
+                </div>
+                <div class="col-4">
+                    <span class="fs-5 me-2">Lihat Saldo</span> <span id="toggleVisibilityIcon" class="fs-5 bi bi-eye "
+                        onclick="toggleVisibility()" style="cursor: pointer;"> </span>
+                </div>
         </div>
     </div>
 </div>
@@ -50,35 +55,25 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    let offset = <?php echo count($transaksiHistory); ?>; // Hitung offset untuk item-item berikutnya
-    const showMoreButton = document.getElementById('showMoreButton');
+   
+   let isVisible = true;
 
-    showMoreButton.addEventListener('click', function () {
-        fetch('HistoryController/showMore', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                offset: offset // Kirim offset ke controller saat tombol "Show More" ditekan
-            })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Tambahkan data transaksi berikutnya ke dalam tampilan
-            const transactionHistoryDiv = document.getElementById('transactionHistory');
-            data.forEach(transaction => {
-                const transactionDiv = document.createElement('div');
-                transactionDiv.textContent = transaction['transaction_data'];
-                transactionHistoryDiv.appendChild(transactionDiv);
-            });
+function toggleVisibility() {
+    const amountBalance = document.getElementById('amountBalance');
+    const toggleVisibilityIcon = document.getElementById('toggleVisibilityIcon');
 
-            offset += data.length; // Update offset
-        })
-        .catch(error => {
-            console.error('Error fetching more data:', error);
-        });
-    });
+    if (isVisible) {
+        amountBalance.innerText = 'Rp ******';
+        toggleVisibilityIcon.classList.remove('bi-eye');
+        toggleVisibilityIcon.classList.add('bi-eye-slash');
+        isVisible = false;
+    } else {
+        amountBalance.innerText = 'Rp  <?= $balanceData ?>';
+        toggleVisibilityIcon.classList.remove('bi-eye-slash');
+        toggleVisibilityIcon.classList.add('bi-eye');
+        isVisible = true;
+    }
+}
 </script>
    
 

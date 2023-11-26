@@ -64,7 +64,11 @@
     </div>
     <?php endif; ?>
 </div>
-
+<?php if (isset($successMessage)): ?>
+    <div class="alert alert-success" role="alert">
+        <?= $successMessage ?>
+    </div>
+<?php endif; ?>
 
 
 

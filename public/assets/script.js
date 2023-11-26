@@ -4,6 +4,7 @@ const togglePassword1 = document.getElementById('togglePassword1');
 const passwordInput2 = document.getElementById('passwordInput2');
 const togglePassword2 = document.getElementById('togglePassword2');
 
+
 togglePassword1.addEventListener('click', function () {
 
     if (passwordInput1.type === 'password') {
@@ -26,6 +27,11 @@ togglePassword2.addEventListener('click', function () {
         togglePassword2.innerHTML = '<i class="fs-5 bi bi-eye"></i>';
     }
 });
+
+
+
+
+
 
 // Close Alert
 function closeAlert() {
@@ -51,20 +57,3 @@ function editProfile() {
     document.querySelector('.logout-btn').style.display = 'none';
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-    const editIcon = document.querySelector('.edit-icon');
-    const profileImageInput = document.getElementById('profileImageInput');
-    const imageUploadForm = document.getElementById('imageUploadForm');
-
-    // Ketika ikon edit diklik
-    editIcon.addEventListener('click', function() {
-        // Munculkan jendela untuk memilih gambar saat ikon edit diklik
-        profileImageInput.click();
-    });
-
-    // Ketika gambar dipilih
-    profileImageInput.addEventListener('change', function() {
-        // Simpan gambar yang dipilih dengan melakukan submit pada form
-        imageUploadForm.submit();
-    });
-});

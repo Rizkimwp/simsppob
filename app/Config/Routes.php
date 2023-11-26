@@ -17,11 +17,22 @@ $routes->post('/registration/store', 'RegistrasiController::store');
 
 // Route Homepage
 $routes->get('/homepage', 'HomepageController::index', ['filter' => 'auth']);  
+// Route Top up
 $routes->get('/topup', 'TopupController::index', ['filter' => 'auth']);  
 $routes->post('/topup/store', 'TopupController::topup');  
-$routes->get('/transaksi', 'TransaksiController::index', ['filter' => 'auth']);  
+// Route History Transaksi 
+$routes->get('/history', 'HistoryController::index', ['filter' => 'auth']);  
+$routes->get('/history/loadmore', 'HistoryController::loadMore', ['filter' => 'auth']);  
+// Route Profile
 $routes->get('/profile', 'ProfileController::index', ['filter' => 'auth']);  
 $routes->post('/profile/update', 'ProfileController::update');  
 $routes->put('/profile/update', 'ProfileController::update');  
+$routes->post('/profile/image', 'ProfileController::updateImage');  
+$routes->put('/profile/image', 'ProfileController::updateImage');  
+
+
+// Route Transaksi Services
+$routes->get('transaksi/(:segment)', 'TransaksiController::index/$1');
+$routes->post('/transaksi', 'TransaksiController::store');
 
 

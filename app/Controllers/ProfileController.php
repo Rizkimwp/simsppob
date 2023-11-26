@@ -64,54 +64,58 @@ class ProfileController extends BaseController
 // Fungsi Update Image
 public function updateImage()
 {
-   
-    
+    $validationRules = [
+        'profile_image' => [
+            'label' => 'Profile Image',
+            'rules' => 'uploaded[profile_image]|max_size[profile_image,100]|mime_in[profile_image,image/jpeg,image/png]',
+            'errors' => [
+                'uploaded' => 'Pilih sebuah gambar.',
+                'max_size' => 'Ukuran gambar melebihi batas maksimum 100 KB.',
+                'mime_in' => 'Format gambar tidak valid. Hanya file JPG atau PNG yang diperbolehkan.'
+            ]
+        ]
+    ];
 
-    // Ambil file gambar dari request
-    $image = $this->request->getFile('profile_image');
-
-    if ($image->isValid() && ($image->getClientMimeType() === 'image/jpeg' || $image->getClientMimeType() === 'image/png')) {
-        // Ambil konten file sebagai string binary
-        $fileContent = file_get_contents($image->getPathname());
-
-        // Endpoint API untuk update gambar profil
+    if ($this->validate($validationRules)) {
         $url = "https://take-home-test-api.nutech-integrasi.app/profile/image";
-
-        // Ambil token dari sesi login
         $token = session()->get('userToken');
+        $uploadedImage = $this->request->getFile('profile_image');
+        $filePath = $uploadedImage->getRealPath();
 
-        // Buat instance HTTP client
         $client = \Config\Services::curlrequest();
 
         try {
-            // Kirim gambar sebagai string binary ke endpoint API menggunakan metode PUT
             $response = $client->request('PUT', $url, [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $token,
-                    'Content-Type' => 'application/octet-stream', // Sesuaikan dengan tipe konten yang diperlukan
+                    'Content-Type' => 'multipart/form-data',
                 ],
-                'body' => $fileContent // Kirim file content sebagai body permintaan
+                'multipart' => [
+                    [
+                        'name' => 'file',
+                        'contents' => fopen($filePath, 'r'),
+                        'filename' => $uploadedImage->getName(),
+                    ],
+                ],
             ]);
 
             if ($response->getStatusCode() === 200) {
-                // Jika respons berhasil
-                $responseData = json_decode($response->getBody(), true);
-                // Lakukan penanganan respons sesuai dengan dokumen respons
-                // Misalnya, Anda dapat menggunakan $responseData untuk menampilkan URL gambar baru
                 return redirect()->to('/profile')->with('success', 'Gambar profil berhasil diunggah');
             } else {
-                // Jika respons gagal
                 return redirect()->to('/profile')->with('error', 'Gagal mengunggah gambar profil');
             }
         } catch (\Exception $e) {
-            // Tangani kesalahan yang terjadi saat panggilan API
-            return redirect()->to('/profile')->with('error', 'Terjadi kesalahan. Coba lagi nanti atau periksa koneksi internet Anda.');
+            $errorMessage = $e->getMessage();
+            return redirect()->to('/profile')->with('error', $errorMessage);
         }
     } else {
-        // Jika file tidak valid
-        return redirect()->to('/profile')->with('error', 'Format gambar tidak valid. Hanya file JPG atau PNG yang diperbolehkan.');
+        return redirect()->to('/profile')->with('error', $this->validator->getErrors());
     }
 }
 
-    }
+
+
+}
+
+    
 

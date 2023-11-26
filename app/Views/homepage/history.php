@@ -15,7 +15,7 @@
         <div class="col-md-6 col-lg-6 bg-danger rounded">
         <div class="row p-4 text-white"> 
                 <div class="col-12"><p class="fw-medium">Saldo Anda</p></div>
-                <div class="col-12"><h2>RP <?= $balanceData?> </div>
+                <div class="col-12"><h2>Rp <?= $balanceData?> </div>
                 <div class="col-12"><p class="fw-light">Lihat Saldo </p></div>
         </div>
     </div>
@@ -25,23 +25,30 @@
     <h4 class="ps-3">Semua Transaksi</h4>
 </div>
 
-<?php if (!empty($transaksi['data']['records'])): ?>
-                <?php foreach ($transaksi['data']['records'] as $transaksiHistory): ?>
-<div class="row border border-2 rounded p-3 m-3">
-    <div class="col-md-6"> 
-    <h2 class="text-success">+ Rp<?= number_format($transaksiHistory['total_amount'], 0, ',', '.') ?> </h2>
-    <p><?= date('d F Y H.i', strtotime($transaksiHistory['created_on'])) ?> wib</p>
-    </div>
-  <div class="col-md-6 text-end"><p><?= $transaksiHistory['description'] ?></p> </div>
-</div>
-<?php endforeach; ?>
-<?php else: ?>
-                <div class="col">
-                    <p class="text-danger">No transactions found.</p>
-                </div>
-<?php endif; ?>
-    </div>
 
+<?php foreach ($transaksi['data']['records'] as $transaksiHistory): ?>
+    <div class="row border border-2 p-2 rounded  m-3">
+        <div class="col-md-6">  
+            <?php if ($transaksiHistory['description'] === 'Top Up Balance'): ?>
+                <h3 class="text-success">+ Rp<?= number_format($transaksiHistory['total_amount'], 0, ',', '.') ?> </h3>
+                <?php else: ?>
+                    <h3 class="text-danger">- Rp<?= number_format($transaksiHistory['total_amount'], 0, ',', '.') ?> </h3>
+                <?php endif; ?>
+            <p><?= date('d F Y H.i', strtotime($transaksiHistory['created_on'])) ?> wib</p>
+        </div>
+        <div class="col-md-6 text-end">
+                <p><?= $transaksiHistory['description'] ?></p>
+        </div>
+    </div>
+<?php endforeach; ?>
+
+<div class="text-center">
+    <button id="show-more-btn" class="btn btn-primary mt-3">Show More</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   
 
 
  

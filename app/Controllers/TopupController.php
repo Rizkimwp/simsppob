@@ -27,25 +27,18 @@ class TopupController extends BaseController
         
         $amount = $this->request->getVar('top_up_amount'); 
 
-        $validation =  \Config\Services::validation();
-
-        $validation = [ 'top_up_amount' => 'required|int'];
-
          // Validasi data sebelum top up
     if ($amount < 10000 || $amount> 1000000) {
         // Jika tidak memenuhi kriteria, lakukan sesuai penanganan yang kamu inginkan
         // Contoh: Tampilkan pesan kesalahan atau ambil tindakan yang sesuai
-        return redirect()->to('/topup')->with('error', 'Jumlah top up harus antara 10,000 sampai 1,000,000');
+        return redirect()->to('/topup')->with('errorMessage', 'Jumlah top up harus antara 10,000 sampai 1,000,000');
     }
 
-
-    
         $token = session()->get('userToken');
         $client = \Config\Services::curlrequest();
         $headers = [
             'Authorization' => 'Bearer ' . $token
         ];
-
 try {
     $response = $client->request('POST', "https://take-home-test-api.nutech-integrasi.app/topup", [
         'headers' => $headers,
@@ -54,7 +47,6 @@ try {
         ]
     ]);
     
-
     $body = $response->getBody();
     $statusCode = $response->getStatusCode();
 
@@ -65,16 +57,10 @@ try {
 
             // Validasi status 0 (Request Successfully)
             if ($responseData['status'] === 0) {
-                $balance = $responseData['data']['balance'];
-                $message = 'Top up berhasil. Saldo sekarang: ' . $balance;
-                $response = [
-                    'status' => 'success',
-                    'message' => $message
-                ];
-                return $this->response->setStatusCode(200)->setJSON($response);
+                return redirect()->to('topup' )->with('success', 'Top Up Berhasil');
             } else {
                 $errorMessage = $responseData['message'];
-                return $this->response->setStatusCode(400)->setJSON(['error' => $errorMessage]);
+                return redirect()->to('topup' )->with('errorMessage', $responseData);
             }
             break;
         case 400:
@@ -83,7 +69,7 @@ try {
             // Validasi status 102 (Bad Request)
             if ($errorData['status'] === 102) {
                 $errorMessage = $errorData['message'];
-                return $this->response->setStatusCode(400)->setJSON(['error' => $errorMessage]);
+                return redirect()->to('topup' )->with('errorMessage', $errorData);
             }
             break;
         case 401:
@@ -92,16 +78,16 @@ try {
             // Validasi status 108 (Unauthorized)
             if ($errorData['status'] === 108) {
                 $errorMessage = $errorData['message'];
-                return $this->response->setStatusCode(401)->setJSON(['error' => $errorMessage]);
+                return redirect()->to('topup' )->with('errorMessage', $errorMessage);
             }
             break;
         default:
-            return $this->response->setStatusCode(500)->setJSON(['error' => 'Terjadi kesalahan']);
+        return redirect()->to('topup' )->with('errorMessage', "Terjadi Kesalahan");
             break;
     }
 } catch (\Exception $e) {
     $errorMessage = 'Terjadi kesalahan: ' . $e->getMessage();
-    return $this->response->setStatusCode(500)->setJSON(['error' => $errorMessage]);
+    return redirect()->to('topup' )->with('errorMessage', $errorMessage);
 }
 
     }

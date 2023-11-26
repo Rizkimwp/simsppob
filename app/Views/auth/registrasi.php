@@ -16,24 +16,24 @@
 
                 <?= csrf_field() ?>
                 <div class="col-12 border mb-4">
-                    <span class="d-flex"><i class="fs-3 bi bi-at m-1"></i><input type="text" name="email"
+                    <span class="d-flex"><i class="fs-3 bi bi-at m-1 text-secondary"></i><input type="text" name="email"
                             class="form-control-plaintext  " placeholder="Masukan email anda" aria-label="Username"
                             aria-describedby="addon-wrapping"></span>
 
 
                 </div>
                 <div class="col-12 border mb-4">
-                    <span class="d-flex"><i class="fs-3 bi bi-person-fill m-1"></i><input type="text" name="first_name"
+                    <span class="d-flex"><i class="fs-3 bi bi-person-fill m-1 text-secondary"></i><input type="text" name="first_name"
                             class="form-control-plaintext " placeholder="nama depan" aria-label="Username"
                             aria-describedby="addon-wrapping"></span>
                 </div>
                 <div class="col-12 border mb-4">
-                    <span class="d-flex"><i class="fs-3 bi bi-person-fill m-1"></i><input type="text" name="last_name"
+                    <span class="d-flex"><i class="fs-3 bi bi-person-fill m-1 text-secondary"></i><input type="text" name="last_name"
                             class="form-control-plaintext" placeholder="nama belakang" aria-label="Username"
                             aria-describedby="addon-wrapping"></span>
                 </div>
                 <div class="col-12 border mb-4">
-                    <span class="d-flex"><i class="fs-3 bi bi-lock-fill m-1"></i><input type="password" name="password"
+                    <span class="d-flex"><i class="fs-3 bi bi-lock-fill m-1 text-secondary"></i><input type="password" name="password"
                             class="form-control-plaintext" placeholder="buat password" id="passwordInput1"
                             aria-label="Username" aria-describedby="addon-wrapping"> <span class="m-1"
                             id="togglePassword1">
@@ -41,7 +41,7 @@
                         </span></span>
                 </div>
                 <div class="col-12 border mb-5">
-                    <span class="d-flex"><i class="fs-3 bi bi-lock-fill m-1"></i><input type="password"
+                    <span class="d-flex"><i class="fs-3 bi bi-lock-fill m-1 text-secondary"></i><input type="password"
                             class="form-control-plaintext" id="passwordInput2" placeholder="konfirmasi password"
                             aria-label="Username" aria-describedby="addon-wrapping"> <span class="m-1"
                             id="togglePassword2">
@@ -58,7 +58,7 @@
                     <button type="submit" class="btn btn-danger ">Registrasi</button>
                 </div>
             </form>
-            <p class="text-center mt-3">Belum punya akun? login <a href="\"
+            <p class="text-center mt-3">Sudah punya akun? login <a href="\"
                     class="link-offset-2 link-underline link-underline-opacity-0 link-danger fw-bold"> di
                     sini</a></p>
         </div>

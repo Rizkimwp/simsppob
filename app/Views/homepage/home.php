@@ -32,10 +32,13 @@
 
     <div class="container mt-4">
         <div class="row text-center">
-        <?php foreach ($servicesData['data'] as $service) : ?>
-            <div class="col-1"><a href="" class="link-offset-2 link-underline link-underline-opacity-0 link-dark "><img
-                        class="mb-1" src="<?= $service['service_icon'] ?>" alt=""> <span
-                        class="fw-light "><?= $service['service_name'] ?></span></a></div>
+        <?php foreach ($servicesData['data'] as $service) : ?> 
+         
+            <div class="col-1"><a href="" class="link-offset-2 link-underline link-underline-opacity-0 link-dark ">
+            <a href="/transaksi/<?php echo $service['service_code']; ?>" class="link-offset-2 link-underline link-underline-opacity-0">
+             <img class="mb-1" src="<?= $service['service_icon'] ?>" alt="services icon"> </a>
+                <span class="fw-light "><?= $service['service_name'] ?></span></a></div>
+            
                         <?php endforeach ?>
             
     </div>

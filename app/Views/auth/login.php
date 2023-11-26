@@ -16,17 +16,17 @@
             <form action="/login" method="post">
                 <?= csrf_field() ?>
                 <div class="col-12 border mb-3">
-                    <span class="d-flex"><i class="fs-3 bi bi-at m-1"></i><input type="text"
+                    <span class="d-flex"><i class="fs-3 bi bi-at m-1 text-secondary" ></i><input type="text"
                     class="form-control-plaintext " id="email" name="email" placeholder="Masukan email anda"
                     aria-label="Username" aria-describedby="addon-wrapping"></span>
                 </div>
                 
                 <div class="col-12 border mb-5">
-                    <span class="d-flex"><i class="fs-3 bi bi-lock-fill m-1"></i><input type="password" name="password" 
+                    <span class="d-flex"><i class="fs-3 bi bi-lock-fill m-1 text-secondary" ></i><input type="password" name="password" 
                     class="form-control-plaintext" id="passwordInput1" placeholder="Masukan Password anda"
-                    aria-label="Username" aria-describedby="addon-wrapping"> <span class="m-1"
-                    id="togglePassword1">
-                    <i class="fs-4 bi bi-eye"></i>
+                    aria-label="Username" aria-describedby="addon-wrapping"> 
+                    <span class="m-2"id="togglePassword1">
+                    <i class="fs-4 bi bi-eye text-secondary"></i>
                 </span></span>
             </div>
             

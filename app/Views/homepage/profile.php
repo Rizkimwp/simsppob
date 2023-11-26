@@ -13,7 +13,7 @@
                 </div>
             </div>
             <!-- Form Update Image -->
-            <form id="imageUploadForm" action="/profile/update" method="post" enctype="multipart/form-data"
+            <form action="/profile/image" method="post" enctype="multipart/form-data"
                 style="display: none;">
                 <input type="file" id="profileImageInput" name="profile_image" accept="image/*">
                 <input type="submit" value="Upload" style="display: none;">
@@ -24,7 +24,7 @@
         </div>
         <div class="col-md-6">
 <!-- Form Update Profile -->
-            <form action="/profile/update" method="post">
+            <form action="/profile/image" method="post">
                 <?= csrf_field() ?>
                 <label for="email" class="mb-2">Email</label>
                 <div class="col-12 border  border-dark-subtle mb-3">

@@ -1,4 +1,4 @@
-# Nama Proyek
+# SIMS PPOB
 
 **SIMS PPOB - Sistem Pembayaran Online**
 SIMS PPOB merupakan sebuah platform untuk melakukan berbagai transaksi pembayaran secara online. Proyek ini memanfaatkan berbagai fitur front-end dan back-end untuk menyediakan layanan yang meliputi:
